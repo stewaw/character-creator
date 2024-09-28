@@ -18,18 +18,20 @@ class Character:
         self.Charisma = stats[5]
 
     def __str__(self) -> str:
-        return (f'{self.Name}\n'
-                f'Strength: {self.Strength}\n'
-                f'Dexterity: {self.Dexterity}\n'
-                f'Constitution: {self.Constitution}\n'
-                f'Intelligence: {self.Intelligence}\n'
-                f'Wisdom: {self.Wisdom}\n'
-                f'Charisma: {self.Charisma}')
+        return f'{self.Name}\nStrength: {self.Strength}\nDexterity: {self.Dexterity}\nConstitution: {self.Constitution}\nIntelligence: {self.Intelligence}\nWisdom: {self.Wisdom}\nCharisma: {self.Charisma}'
+
+    def to_json(self) -> dict:
+        return {k: v for k, v in self.__dict__.items()}
 
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        dude = Character(' '.join(sys.argv[1:]).title())
-        print(dude)
+        char_name = sys.argv[1:]
+        character = Character(' '.join(char_name).title())
+        print(character)
+
+        with open(f'{"_".join(char_name).lower()}.json', 'w') as out:
+            json.dump(character.to_json(), out)
+
     else:
         print("Create a randomised character by entering their name after the .py")
